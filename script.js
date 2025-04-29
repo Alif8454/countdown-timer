@@ -1,7 +1,18 @@
-// Set the launch date to 14 days from now
-const launchDate = new Date();
-launchDate.setDate(launchDate.getDate() + 14);
-const launchTime = launchDate.getTime();
+// Cek apakah sudah ada launchTime di localStorage
+let launchTime = localStorage.getItem("launchTime");
+
+if (!launchTime) {
+  // Jika belum ada, set ke 14 hari dari sekarang
+  const launchDate = new Date();
+  launchDate.setDate(launchDate.getDate() + 14);
+  launchTime = launchDate.getTime();
+
+  // Simpan ke localStorage
+  localStorage.setItem("launchTime", launchTime);
+} else {
+  // Convert kembali ke number
+  launchTime = parseInt(launchTime);
+}
 
 const countdown = setInterval(() => {
   const now = new Date().getTime();
@@ -20,5 +31,6 @@ const countdown = setInterval(() => {
   if (distance < 0) {
     clearInterval(countdown);
     document.getElementById("countdown").innerHTML = "🚀 Launched!";
+    localStorage.removeItem("launchTime"); // Reset agar bisa mulai ulang nanti
   }
 }, 1000);
